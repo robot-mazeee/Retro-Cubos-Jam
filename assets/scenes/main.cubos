@@ -3,6 +3,21 @@
         "cubos::engine::RenderTargetDefaults": {},
         "cubos::engine::GizmosTarget": {}
     },
+    "#hmm": {
+        "cubos::engine::RenderVoxelGrid": {
+            "asset": "dcf85c3c-ff04-4e50-924c-c86ecfd204e6",
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            }
+        },
+        "cubos::engine::Position": {
+            "x": -16,
+            "y": 1,
+            "z": 8
+        }
+    },
     "#player": {
         "cubos::engine::RenderVoxelGrid": {
             "asset": "57d1b886-8543-4b8b-8f78-d911e9c4f896",

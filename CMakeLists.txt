@@ -15,6 +15,7 @@ add_executable(game
     src/obstacle.cpp
     src/player.cpp
     src/spawner.cpp
+    src/question-mark-block.cpp
 )
 
 target_link_libraries(game cubos::engine)
