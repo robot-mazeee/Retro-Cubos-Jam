@@ -1,13 +1,5 @@
 {
     "actions": {
-        "left": [
-            {"keys": ["A"]},
-            {"keys": ["Left"]}
-        ],
-        "right": [
-            {"keys": ["D"]},
-            {"keys": ["Right"]}
-        ],
         "restart": [
             {"keys": ["R"]}
         ],
@@ -19,6 +11,23 @@
         ]
     },
     "axes": {
+        "player-move-lateral": {
+            "positive": [
+                {"keys": ["A"]}
+            ],
+            "negative": [
+                {"keys": ["D"]}
+            ]
+        },
+        "player-move-longitudinal": {
+            "positive": [
+                {"keys": ["W"]}
+            ],
+            "negative": [
+                {"keys": ["S"]}
+            ]
+        },
+
         "debug-move-lateral": {
             "positive": [
                 {"keys": ["D"]}

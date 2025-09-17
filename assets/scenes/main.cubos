@@ -45,7 +45,10 @@
             "z": 2.0
         },
         "cubos::engine::CollisionLayers": 1,
-        "cubos::engine::CollisionMask": 1
+        "cubos::engine::CollisionMask": 1,
+        "Player": {
+            "speed": 16.0
+        }
     },
     "#sun": {
         "cubos::engine::DirectionalLight": {
