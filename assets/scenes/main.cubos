@@ -34,11 +34,11 @@
             }
         },
         "cubos::engine::Position": {
-            "x": -45,
-            "y": -70,
-            "z": -85
+            "x": 0,
+            "y": -8.5,
+            "z": -25
         },
-        "cubos::engine::Scale": 8.000,
+        "cubos::engine::Scale": 1.000,
         "cubos::engine::BoxCollisionShape": {
             "x": 3.0,
             "y": 7.0,
@@ -69,15 +69,15 @@
         },
         "cubos::engine::DrawsTo#render-target": {},
         "cubos::engine::Position": {
-            "x": -80,
-            "y": 2,
-            "z": -175
+            "x": 0,
+            "y": 20,
+            "z": -45
         },
         "cubos::engine::Rotation": {
-            "x": 0.037726,
-            "y": 0.962208,
-            "z": 0.184907,
-            "w": -0.196319
+            "x": 0.00,
+            "y": 0.95,
+            "z": 0.30,
+            "w": 0.00
         }
     }
 }
