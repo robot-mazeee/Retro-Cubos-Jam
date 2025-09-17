@@ -16,6 +16,12 @@
             "x": 0,
             "y": 0,
             "z": 0
+        },
+        "cubos::engine::Rotation": {
+            "w": 0.0,
+            "x": 0.0,
+            "y": 1.0,
+            "z": 0.0
         }
     },
     "#player": {
@@ -28,21 +34,18 @@
             }
         },
         "cubos::engine::Position": {
-            "x": 0,
-            "y": 0,
-            "z": 8
+            "x": -45,
+            "y": -70,
+            "z": -85
         },
+        "cubos::engine::Scale": 8.000,
         "cubos::engine::BoxCollisionShape": {
             "x": 3.0,
             "y": 7.0,
             "z": 2.0
         },
         "cubos::engine::CollisionLayers": 1,
-        "cubos::engine::CollisionMask": 1,
-        "Player": {
-            "speed": 5,
-            "laneWidth": 9
-        }
+        "cubos::engine::CollisionMask": 1
     },
     "#sun": {
         "cubos::engine::DirectionalLight": {
@@ -66,15 +69,15 @@
         },
         "cubos::engine::DrawsTo#render-target": {},
         "cubos::engine::Position": {
-            "x": 0,
-            "y": 40,
-            "z": -20
+            "x": -80,
+            "y": 2,
+            "z": -175
         },
         "cubos::engine::Rotation": {
-            "x": 0,
-            "y": -0.92,
-            "z": -0.38,
-            "w": 0
+            "x": 0.037726,
+            "y": 0.962208,
+            "z": 0.184907,
+            "w": -0.196319
         }
     }
 }
