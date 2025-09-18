@@ -12,6 +12,7 @@
                 "z": 0
             }
         },
+        "cubos::engine::VoxelCollisionShape": "971422e9-975d-4b58-aa46-df07e5b1bee6",
         "cubos::engine::Position": {
             "x": 0,
             "y": 0,
@@ -26,7 +27,7 @@
     },
     "#player": {
         "cubos::engine::RenderVoxelGrid": {
-            "asset": "57d1b886-8543-4b8b-8f78-d911e9c4f896",
+            "asset": "f7078ff2-a736-4a22-a02f-79d5851e735c",
             "offset": {
                 "x": 0,
                 "y": 0,
@@ -34,11 +35,11 @@
             }
         },
         "cubos::engine::Position": {
-            "x": 0,
-            "y": -8.5,
-            "z": -25
+            "x": 12.0,
+            "y": -7.0,
+            "z": -28.0
         },
-        "cubos::engine::Scale": 1.000,
+        "cubos::engine::Scale": 0.1,
         "cubos::engine::BoxCollisionShape": {
             "x": 3.0,
             "y": 7.0,
