@@ -1,5 +1,6 @@
+#include <cubos/core/ecs/name.hpp>
+
 #include <cubos/engine/assets/plugin.hpp>
-#include <cubos/engine/collisions/colliding_with.hpp>
 #include <cubos/engine/defaults/plugin.hpp>
 #include <cubos/engine/input/plugin.hpp>
 #include <cubos/engine/render/lights/environment.hpp>
@@ -9,6 +10,15 @@
 #include <cubos/engine/tools/plugin.hpp>
 #include <cubos/engine/utils/free_camera/plugin.hpp>
 #include <cubos/engine/voxels/plugin.hpp>
+
+#include <cubos/engine/collisions/colliding_with.hpp>
+#include <cubos/engine/collisions/collision_layers.hpp>
+#include <cubos/engine/collisions/collision_mask.hpp>
+#include <cubos/engine/collisions/plugin.hpp>
+#include <cubos/engine/collisions/shapes/box.hpp>
+#include <cubos/engine/physics/plugin.hpp>
+#include <cubos/engine/physics/plugins/gravity.hpp>
+#include <cubos/engine/physics/solver/plugin.hpp>
 
 #include "obstacle.hpp"
 #include "player.hpp"
@@ -24,13 +34,26 @@ static const Asset<InputBindings> InputBindingsAsset = AnyAsset("/assets/input.b
 int main(int argc, char** argv)
 {
     Cubos cubos{argc, argv};
+    
+    // -------
+    // Plugins
+    // -------
 
     cubos.plugin(defaultsPlugin);
     cubos.plugin(freeCameraPlugin);
     cubos.plugin(toolsPlugin);
+
+    // cubos.plugin(physicsSolverPlugin);
+    cubos.plugin(gravityPlugin);
+
     cubos.plugin(playerPlugin);
+    
     // To spawn my arbitrary question mark block:
     // cubos.plugin(questionMarkBlockPlugin);
+
+    // -------
+    // Systems
+    // -------
 
     cubos.startupSystem("configure settings").before(settingsTag).call([](Settings& settings) {
         settings.setString("assets.app.osPath", APP_ASSETS_PATH);
@@ -59,6 +82,42 @@ int main(int argc, char** argv)
                 }
 
                 cmds.spawn(assets.read(SceneAsset)->blueprint()).named("main");
+            }
+        });
+
+    cubos.startupSystem("Floor collider from the complex_physics engine sample")
+        .tagged(assetsTag)
+        .call([](Commands cmds, const Assets& assets) {
+            // return;
+            // Spawn floor collider
+            cmds.create()
+                .named("THE_FLOOR")
+                .add(BoxCollisionShape{cubos::core::geom::Box{.halfSize = glm::vec3{200.0F, 5.0F, 200.0F}}})
+                .add(CollisionLayers{})
+                .add(CollisionMask{})
+                .add(LocalToWorld{})
+                .add(Position{{0.0F, -10.0F, 0.0F}})
+                .add(Rotation{})
+                .add(Velocity{.vec = {0.0F, 0.0F, 0.0F}})
+                .add(AngularVelocity{})
+                .add(Force{})
+                .add(Torque{})
+                .add(Impulse{})
+                .add(AngularImpulse{})
+                .add(Mass{.mass = 1.0F, .inverseMass = 0.0F})
+                .add(CenterOfMass{})
+                .add(AccumulatedCorrection{{0.0F, 0.0F, 0.0F}})
+                .add(Inertia{.inertia = glm::mat3(0.0F), .inverseInertia = glm::mat3(0.0F), .autoUpdate = true})
+                .add(PhysicsMaterial{.friction = 0.1F});
+            CUBOS_DEBUG("Created THE_FLOOR");
+    });
+
+    cubos.system("detect player vs obstacle collisions")
+        .call([](Query<const Player&, const CollidingWith&, Entity, const cubos::core::ecs::Name&> collisions) {
+            for (auto [player, collidingWith, entity, name] : collisions)
+            {
+                CUBOS_INFO("Player collided with <{}>!", name.value);
+                (void)player; // here to shut up 'unused variable warning', you can remove it
             }
         });
 

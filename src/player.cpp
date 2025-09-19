@@ -83,8 +83,6 @@ void playerPlugin(Cubos& cubos)
                     auto entityName = (entityNameMatch) ? std::get<0>(*entityNameMatch).value : "<???>";
                     CUBOS_DEBUG("Raycast HIT entity {} @ ({}, {}, {})\tdist = {}", entityName, hit->point.x,
                                 hit->point.y, hit->point.z, glm::distance(playerBottom, hit->point));
-                    
-                    
                 }
 
                 // -----
