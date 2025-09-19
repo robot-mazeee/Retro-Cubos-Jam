@@ -1,0 +1,26 @@
+    cubos.startupSystem("Floor collider from the complex_physics engine sample")
+        .tagged(assetsTag)
+        .call([](Commands cmds, const Assets& assets) {
+            return;
+            // Spawn floor collider
+            cmds.create()
+                .named("THE_FLOOR")
+                .add(BoxCollisionShape{cubos::core::geom::Box{.halfSize = glm::vec3{200.0F, 5.0F, 200.0F}}})
+                .add(CollisionLayers{})
+                .add(CollisionMask{})
+                .add(LocalToWorld{})
+                .add(Position{{0.0F, -10.0F, 0.0F}})
+                .add(Rotation{})
+                .add(Velocity{.vec = {0.0F, 0.0F, 0.0F}})
+                .add(AngularVelocity{})
+                .add(Force{})
+                .add(Torque{})
+                .add(Impulse{})
+                .add(AngularImpulse{})
+                .add(Mass{.mass = 1.0F, .inverseMass = 0.0F})
+                .add(CenterOfMass{})
+                .add(AccumulatedCorrection{{0.0F, 0.0F, 0.0F}})
+                .add(Inertia{.inertia = glm::mat3(0.0F), .inverseInertia = glm::mat3(0.0F), .autoUpdate = true})
+                .add(PhysicsMaterial{.friction = 0.1F});
+            CUBOS_DEBUG("Created THE_FLOOR");
+    });

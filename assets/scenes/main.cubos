@@ -4,59 +4,10 @@
         "cubos::engine::GizmosTarget": {}
     },
     "#level": {
-        "cubos::engine::RenderVoxelGrid": {
-            "asset": "971422e9-975d-4b58-aa46-df07e5b1bee6",
-            "offset": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-            }
-        },
-        "cubos::engine::Position": {
-            "x": 0,
-            "y": 0,
-            "z": 0
-        },
-        "cubos::engine::Rotation": {
-            "w": 0.0,
-            "x": 0.0,
-            "y": 1.0,
-            "z": 0.0
-        },
-        "cubos::engine::VoxelCollisionShape": "971422e9-975d-4b58-aa46-df07e5b1bee6",
-        "cubos::engine::CollisionLayers": 1,
-        "cubos::engine::CollisionMask": 1
+        "inherit": "0f1a5397-0584-4c2c-94bd-d825a5c0f2ba"
     },
     "#player": {
-        "cubos::engine::RenderVoxelGrid": {
-            "asset": "57d1b886-8543-4b8b-8f78-d911e9c4f896",
-            "offset": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-            }
-        },
-        "cubos::engine::Position": {
-            "x": 12.0,
-            "y": 7.0,
-            "z": -28.0
-        },
-        "cubos::engine::Scale": 1,
-        "cubos::engine::BoxCollisionShape": {
-            "x": 3.0,
-            "y": 4.2,
-            "z": 3.0
-        },
-        "cubos::engine::CollisionLayers": 1,
-        "cubos::engine::CollisionMask": 1,
-        "Player": {
-            "speed": 32.0
-        },
-        "cubos::engine::PhysicsBundle": {
-            "mass": 1.0,
-            "centerOfMass": { "x": 0.0, "y": 0.0, "z": 0.0 },
-            "impulse": { "x": 0.0, "y": 5.0, "z": 0.0 }
-        }
+        "inherit": "19973927-d92e-4028-beb6-f961296106d9"
     },
     "#sun": {
         "cubos::engine::DirectionalLight": {

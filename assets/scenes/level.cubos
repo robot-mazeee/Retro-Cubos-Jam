@@ -1,0 +1,12 @@
+{
+    "inherit": "38308025-ed2e-4fed-a5df-b7c890a54576",
+    "cubos::engine::VoxelCollisionShape": "971422e9-975d-4b58-aa46-df07e5b1bee6",
+    "cubos::engine::CollisionLayers": 1,
+    "cubos::engine::CollisionMask": 1,
+    "cubos::engine::RenderVoxelGrid": {
+        "asset": "971422e9-975d-4b58-aa46-df07e5b1bee6",
+        "offset": { "x": 0, "y": 0, "z": 0 }
+    },
+    "cubos::engine::Position": { "x": 0, "y": 0, "z": 0 },
+    "cubos::engine::Rotation": { "w": 0.0, "x": 0.0, "y": 1.0, "z": 0.0 }
+}
