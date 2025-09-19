@@ -28,8 +28,6 @@ int main(int argc, char** argv)
     cubos.plugin(defaultsPlugin);
     cubos.plugin(freeCameraPlugin);
     cubos.plugin(toolsPlugin);
-    cubos.plugin(spawnerPlugin);
-    cubos.plugin(obstaclePlugin);
     cubos.plugin(playerPlugin);
     // To spawn my arbitrary question mark block:
     // cubos.plugin(questionMarkBlockPlugin);
@@ -61,15 +59,6 @@ int main(int argc, char** argv)
                 }
 
                 cmds.spawn(assets.read(SceneAsset)->blueprint()).named("main");
-            }
-        });
-
-    cubos.system("detect player vs obstacle collisions")
-        .call([](Query<const Player&, const CollidingWith&, const Obstacle&> collisions) {
-            for (auto [player, collidingWith, obstacle] : collisions)
-            {
-                CUBOS_INFO("Player collided with an obstacle!");
-                (void)player; // here to shut up 'unused variable warning', you can remove it
             }
         });
 

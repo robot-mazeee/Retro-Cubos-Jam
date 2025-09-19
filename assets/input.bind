@@ -27,7 +27,14 @@
                 {"keys": ["S"]}
             ]
         },
-
+        "player-move-vertical": {
+            "positive": [
+                {"keys": ["E"]}
+            ],
+            "negative": [
+                {"keys": ["Q"]}
+            ]
+        },
         "debug-move-lateral": {
             "positive": [
                 {"keys": ["D"]}
