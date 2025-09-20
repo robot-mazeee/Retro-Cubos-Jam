@@ -20,6 +20,12 @@
 #include <cubos/engine/physics/plugins/gravity.hpp>
 #include <cubos/engine/physics/solver/plugin.hpp>
 
+#include <cubos/engine/audio/plugin.hpp>
+#include <cubos/engine/audio/play.hpp>
+#include <cubos/engine/audio/audio.hpp>
+#include <cubos/engine/audio/listener.hpp>
+#include <cubos/engine/audio/source.hpp>
+
 #include "obstacle.hpp"
 #include "player.hpp"
 #include "spawner.hpp"
@@ -50,6 +56,9 @@ int main(int argc, char** argv)
     
     // To spawn my arbitrary question mark block:
     // cubos.plugin(questionMarkBlockPlugin);
+
+    cubos.plugin(audioPlugin);
+
 
     // -------
     // Systems
