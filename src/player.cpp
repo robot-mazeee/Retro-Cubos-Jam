@@ -9,6 +9,8 @@
 #include <cubos/engine/collisions/plugin.hpp>
 #include <cubos/engine/collisions/raycast.hpp>
 #include <cubos/engine/collisions/colliding_with.hpp>
+#include <cubos/engine/physics/components/velocity.hpp>
+#include <cubos/engine/physics/plugin.hpp>
 #include <cubos/engine/fixed_step/plugin.hpp>
 
 using namespace cubos::engine;
@@ -24,12 +26,13 @@ void playerPlugin(Cubos& cubos)
     cubos.depends(transformPlugin);
     cubos.depends(collisionsPlugin);
     cubos.depends(fixedStepPlugin);
+    cubos.depends(physicsPlugin);
 
     cubos.component<Player>();
 
     cubos.system("move player")
         .tagged(fixedStepTag)
-        .call([](Input& input, const FixedDeltaTime& dt, Raycast raycast, Query<Player&, Position&> players,
+        .call([](Input& input, const FixedDeltaTime& dt, Raycast raycast, Query<Player&, Position&, Velocity&> players,
                  Query<const cubos::core::ecs::Name&> nameQuery) {
             // Physics variables ---------------------------------------------------
             constexpr auto BASE_GRAVITY = glm::vec3{0.0f, -9.83f, 0.0f};
@@ -38,7 +41,7 @@ void playerPlugin(Cubos& cubos)
             constexpr auto LEVEL_GEOMETRY_MASK = 2;
             // ---------------------------------------------------------------------
 
-            for (auto [player, position] : players)
+            for (auto [player, position, velocity] : players)
             {
                 // -----
                 // Input
@@ -48,7 +51,7 @@ void playerPlugin(Cubos& cubos)
                     input.axis("player-move-vertical"),
                     input.axis("player-move-longitudinal")
                 };
-                position.vec += dt.value * player.speed * inputVec;
+                velocity.vec = player.speed * inputVec;
 
                 /*
                 Gravity during ballistic jumping
