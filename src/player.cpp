@@ -51,7 +51,9 @@ void playerPlugin(Cubos& cubos)
                     input.axis("player-move-vertical"),
                     input.axis("player-move-longitudinal")
                 };
-                velocity.vec = player.speed * inputVec;
+                // velocity.vec = player.speed * inputVec;
+                velocity.vec.x = player.speed * inputVec.x;
+                velocity.vec.z = player.speed * inputVec.z;
 
                 /*
                 Gravity during ballistic jumping
