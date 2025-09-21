@@ -31,6 +31,7 @@
 #include "freakingAudio.hpp"
 #include "spawner.hpp"
 #include "question-mark-block.hpp"
+#include "follow/plugin.hpp"
 
 using namespace cubos::engine;
 
@@ -52,7 +53,6 @@ int main(int argc, char** argv)
 
     // cubos.plugin(physicsSolverPlugin);
     cubos.plugin(gravityPlugin);
-
     cubos.plugin(playerPlugin);
     
     // To spawn my arbitrary question mark block:
@@ -60,6 +60,7 @@ int main(int argc, char** argv)
 
     cubos.plugin(audioPlugin);
     cubos.plugin(freakingAudioPlugin);
+    cubos.plugin(airships::client::followPlugin);
 
     // -------
     // Systems

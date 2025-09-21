@@ -13,6 +13,8 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fsanitize-recover=address")
 add_executable(game
     src/main.cpp
     src/freakingAudio.cpp
+    src/follow/plugin.cpp
+    # src/follow_controller/plugin.cpp
     src/obstacle.cpp
     src/player.cpp
     src/spawner.cpp

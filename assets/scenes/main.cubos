@@ -48,6 +48,12 @@
             "sound": "e325470e-317a-4209-8541-a80b1a856550",
             "playing": true,
             "looping": true
+        },
+        "airships::client::Follow#player": {
+            "distance": 40.0,
+            "phi": 45,
+            "theta": -90,
+            "halfTime": 0.25
         }
     }
 }

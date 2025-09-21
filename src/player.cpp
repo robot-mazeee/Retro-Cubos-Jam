@@ -62,15 +62,20 @@ void playerPlugin(Cubos& cubos)
         });
 
     cubos.system("Collect player input")
-        .call([&queuedJumpImpulse](Commands cmds, Input& input, Query<Player&> players) {
-            for (auto [player] : players)
+        .call([&queuedJumpImpulse](Commands cmds, Input& input, Query<Player&, Position&, Velocity&, Impulse&> players) {
+            for (auto [player, position, velocity, impulse] : players)
             {
                 if (input.justPressed("jump"))
                 {
                     queuedJumpImpulse = player.jump * UP;
+                    impulse.add(queuedJumpImpulse); // I was gonna do this at fixedStep but f it.
+                    position.vec.y += 2;
+                    velocity.vec.y = 2;
                     
                     // Play wing flap SFX
                     cmds.add(player.wings, AudioPlay{});
+
+                    CUBOS_DEBUG("JUMP");
                 }
             }
         });
@@ -86,8 +91,10 @@ void playerPlugin(Cubos& cubos)
                 velocity.vec.x = player.speed * inputVec.x;
                 velocity.vec.z = player.speed * inputVec.z;
                 
-                impulse.add(queuedJumpImpulse);
+                // impulse.add(queuedJumpImpulse);
                 queuedJumpImpulse = glm::vec3{0.0f};
+                CUBOS_DEBUG("INPUT is ({}, {}, {})", inputVec.x, inputVec.y, inputVec.z);
+                CUBOS_DEBUG("JUMP of {} applied", queuedJumpImpulse.y);
             }
         });
 
@@ -107,21 +114,16 @@ void playerPlugin(Cubos& cubos)
 
                 const bool isPlayerFalling = velocity.vec.y < 0.0f;
                 const auto gravity = isPlayerFalling ? FALLING_GRAVITY : BASE_GRAVITY;
-
-    #if 0
-                velocity.vec += dt.value * gravity;
-                position.vec += dt.value * (velocity.vec + dt.value * gravity / 2.0f);
-    #endif
             }
         });
 
     cubos.system("player floor snap")
         .tagged(physicsApplyForcesTag) // implies fixedStepTag
-        .call([](const FixedDeltaTime& dt, Raycast raycast, Query<Player&, Position&> players,
+        .call([](const FixedDeltaTime& dt, Raycast raycast, Query<Player&, Position&, Velocity&> players,
                  Query<const cubos::core::ecs::Name&> nameQuery) {
             // ---------------------------------------------------------------------
 
-            for (auto [player, position] : players)
+            for (auto [player, position, velocity] : players)
             {
                 // -------
                 // Raycast
@@ -144,7 +146,7 @@ void playerPlugin(Cubos& cubos)
                 // -----
                 // Debug
                 // -----
-                CUBOS_DEBUG("velocity = ({}, {}, {})", player.velocity.x, player.velocity.y, player.velocity.z);
+                CUBOS_DEBUG("velocity = ({}, {}, {})", velocity.vec.x, velocity.vec.y, velocity.vec.z);
                 CUBOS_DEBUG("position = ({}, {}, {})", position.vec.x, position.vec.y, position.vec.z);
                 CUBOS_DEBUG("pl. bot. = ({}, {}, {})", playerBottom.x, playerBottom.y, playerBottom.z);
             }
