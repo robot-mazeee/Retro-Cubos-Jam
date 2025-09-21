@@ -4,6 +4,7 @@
 #include <cubos/core/ecs/name.hpp>
 #include <cubos/core/reflection/external/primitives.hpp>
 
+#include <cubos/engine/audio/play.hpp>
 #include <cubos/engine/input/plugin.hpp>
 #include <cubos/engine/transform/plugin.hpp>
 #include <cubos/engine/collisions/plugin.hpp>
@@ -11,6 +12,8 @@
 #include <cubos/engine/collisions/colliding_with.hpp>
 #include <cubos/engine/physics/components/velocity.hpp>
 #include <cubos/engine/physics/components/impulse.hpp>
+#include <cubos/engine/physics/resources/gravity.hpp>
+#include <cubos/engine/physics/plugins/gravity.hpp>
 #include <cubos/engine/physics/plugin.hpp>
 #include <cubos/engine/fixed_step/plugin.hpp>
 
@@ -42,6 +45,7 @@ void playerPlugin(Cubos& cubos)
     cubos.depends(collisionsPlugin);
     cubos.depends(fixedStepPlugin);
     cubos.depends(physicsPlugin);
+    cubos.depends(gravityPlugin);
 
     cubos.component<Player>();
 
@@ -52,13 +56,21 @@ void playerPlugin(Cubos& cubos)
     
     // ------------------------------------
 
+    cubos.startupSystem("Set world gravity")
+        .call([](Gravity& gravity) {
+            gravity.value *= 16.0f;
+        });
+
     cubos.system("Collect player input")
-        .call([&queuedJumpImpulse](Input& input, Query<Player&> players) {
+        .call([&queuedJumpImpulse](Commands cmds, Input& input, Query<Player&> players) {
             for (auto [player] : players)
             {
                 if (input.justPressed("jump"))
                 {
                     queuedJumpImpulse = player.jump * UP;
+                    
+                    // Play wing flap SFX
+                    cmds.add(player.wings, AudioPlay{});
                 }
             }
         });
