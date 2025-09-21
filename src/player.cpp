@@ -10,14 +10,29 @@
 #include <cubos/engine/collisions/raycast.hpp>
 #include <cubos/engine/collisions/colliding_with.hpp>
 #include <cubos/engine/physics/components/velocity.hpp>
+#include <cubos/engine/physics/components/impulse.hpp>
 #include <cubos/engine/physics/plugin.hpp>
 #include <cubos/engine/fixed_step/plugin.hpp>
 
 using namespace cubos::engine;
 
+// ---------------------------------------------------------------------
+constexpr auto UP = glm::vec3{0.0f, 1.0f, 0.0f};
+constexpr auto DOWN = glm::vec3{0.0f, -1.0f, 0.0f};
+// Physics variables ---------------------------------------------------
+constexpr auto REAL_GRAVITY = glm::vec3{0.0f, -9.83f, 0.0f};
+constexpr auto BASE_GRAVITY = 16.0f * REAL_GRAVITY;
+constexpr auto FALLING_GRAVITY = 2.0f * BASE_GRAVITY;
+// ---------------------------------------------------------------------
+constexpr auto LEVEL_GEOMETRY_MASK = 2;
+// ---------------------------------------------------------------------
+
 CUBOS_REFLECT_IMPL(Player)
 {
-    return cubos::core::ecs::TypeBuilder<Player>("Player").withField("speed", &Player::speed).build();
+    return cubos::core::ecs::TypeBuilder<Player>("Player")
+        .withField("speed", &Player::speed)
+        .withField("jump", &Player::jump)
+        .build();
 }
 
 void playerPlugin(Cubos& cubos)
@@ -30,31 +45,45 @@ void playerPlugin(Cubos& cubos)
 
     cubos.component<Player>();
 
-    cubos.system("move player")
-        .tagged(fixedStepTag)
-        .call([](Input& input, const FixedDeltaTime& dt, Raycast raycast, Query<Player&, Position&, Velocity&> players,
-                 Query<const cubos::core::ecs::Name&> nameQuery) {
-            // Physics variables ---------------------------------------------------
-            constexpr auto BASE_GRAVITY = glm::vec3{0.0f, -9.83f, 0.0f};
-            constexpr auto FALLING_GRAVITY = 2.0f * BASE_GRAVITY;
-            // ---------------------------------------------------------------------
-            constexpr auto LEVEL_GEOMETRY_MASK = 2;
-            // ---------------------------------------------------------------------
+    // ------------------------------------
+    // local state
+    // (these should be moved to the Player struct as members to allow multiple Players on the world)
+    glm::vec3 queuedJumpImpulse{};
+    
+    // ------------------------------------
 
-            for (auto [player, position, velocity] : players)
+    cubos.system("Collect player input")
+        .call([&queuedJumpImpulse](Input& input, Query<Player&> players) {
+            for (auto [player] : players)
             {
-                // -----
-                // Input
-                // -----
-                auto inputVec = glm::vec3 {
-                    input.axis("player-move-lateral"),
-                    input.axis("player-move-vertical"),
-                    input.axis("player-move-longitudinal")
-                };
-                // velocity.vec = player.speed * inputVec;
+                if (input.justPressed("jump"))
+                {
+                    queuedJumpImpulse = player.jump * UP;
+                }
+            }
+        });
+
+    cubos.system("Apply player input")
+        .tagged(physicsApplyForcesTag) // This system modifies velocity and applies forces and impulses        
+        .call([&queuedJumpImpulse](Input& input, Query<Player&, Velocity&, Impulse&> players) {
+            for (auto [player, velocity, impulse] : players)
+            {
+                auto inputVec = glm::vec3{input.axis("player-move-lateral"), input.axis("player-move-vertical"),
+                                          input.axis("player-move-longitudinal")};
+                
                 velocity.vec.x = player.speed * inputVec.x;
                 velocity.vec.z = player.speed * inputVec.z;
+                
+                impulse.add(queuedJumpImpulse);
+                queuedJumpImpulse = glm::vec3{0.0f};
+            }
+        });
 
+    cubos.system("player custom gravity")
+        .tagged(physicsApplyForcesTag)
+        .call([](const FixedDeltaTime& dt, Query<Player&, Velocity&> players) {
+            for (auto [player, velocity] : players)
+            {
                 /*
                 Gravity during ballistic jumping
                 --------------------------------
@@ -63,18 +92,28 @@ void playerPlugin(Cubos& cubos)
                 --------------------------------
                 (Makes the simulation more correct when dt.value() varies)
                 */
-                const bool isPlayerFalling = player.velocity.y < 0.0f;
+
+                const bool isPlayerFalling = velocity.vec.y < 0.0f;
                 const auto gravity = isPlayerFalling ? FALLING_GRAVITY : BASE_GRAVITY;
 
-#if 0
-                player.velocity += dt.value * gravity;
-                position.vec += dt.value * (player.velocity + dt.value * gravity / 2.0f);
-#endif
+    #if 0
+                velocity.vec += dt.value * gravity;
+                position.vec += dt.value * (velocity.vec + dt.value * gravity / 2.0f);
+    #endif
+            }
+        });
 
+    cubos.system("player floor snap")
+        .tagged(physicsApplyForcesTag) // implies fixedStepTag
+        .call([](const FixedDeltaTime& dt, Raycast raycast, Query<Player&, Position&> players,
+                 Query<const cubos::core::ecs::Name&> nameQuery) {
+            // ---------------------------------------------------------------------
+
+            for (auto [player, position] : players)
+            {
                 // -------
                 // Raycast
                 // -------
-                constexpr glm::vec3 DOWN = { 0.0f, -1.0f, 0.0f };
                 constexpr float capsuleLength = 8.0f;
                 constexpr float capsuleRadius = 2.0f;
                 constexpr float halfCapsuleHeight = capsuleLength / 2.0f + capsuleRadius;

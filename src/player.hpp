@@ -8,11 +8,9 @@ struct Player
 {
     CUBOS_REFLECT;
 
-    // Movement feel
-    glm::vec3 velocity = { 0.0f, 0.0f, 0.0f };
-
     // Reflected fields
-    float speed{1.0F};     // Speed of the player
+    float speed{1.0F};     // Velocity of player
+    float jump{1.0F};      // Strength of jump impulse
 };
 
 void playerPlugin(cubos::engine::Cubos& cubos);

@@ -2,7 +2,12 @@
     "inherit": "38308025-ed2e-4fed-a5df-b7c890a54576",
 
     "Player": {
-        "speed": 32.0
+        "speed": 32.0,
+        "jump": 20.0
+    },
+    "cubos::engine::Mass": {
+        "mass": 1.0,
+        "inverseMass": 1.0
     },
 
     "#model": {
@@ -33,9 +38,5 @@
         "z": 6
     },
     "cubos::engine::CollisionLayers": 1,
-    "cubos::engine::CollisionMask": 1,
-    "cubos::engine::Mass": {
-        "mass": 1.0,
-        "inverseMass": 1.0
-    }
+    "cubos::engine::CollisionMask": 1
 }

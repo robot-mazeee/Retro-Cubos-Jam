@@ -1,5 +1,9 @@
 {
     "inherit": "38308025-ed2e-4fed-a5df-b7c890a54576",
+    "cubos::engine::PhysicsMaterial": {
+        "friction": 0.0,
+        "bounciness": 0.0
+    },
     "cubos::engine::VoxelCollisionShape": "971422e9-975d-4b58-aa46-df07e5b1bee6",
     "cubos::engine::CollisionLayers": 1,
     "cubos::engine::CollisionMask": 1,

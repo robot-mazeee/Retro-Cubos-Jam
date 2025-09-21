@@ -1,5 +1,9 @@
 {
     "actions": {
+        "jump": [
+            {"keys": ["Space"]}
+        ],
+
         "restart": [
             {"keys": ["R"]}
         ],

@@ -402,6 +402,7 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 build
+build-*/
 .ccls-cache
 
 imgui.ini

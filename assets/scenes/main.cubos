@@ -45,13 +45,9 @@
             "active": true
         },
         "cubos::engine::AudioSource": {
-            "looping": true,
             "sound": "e325470e-317a-4209-8541-a80b1a856550",
-            "playing": true
-        },
-        "cubos::engine::AudioPlay": {
-            
+            "playing": true,
+            "looping": true
         }
-        
     }
 }
