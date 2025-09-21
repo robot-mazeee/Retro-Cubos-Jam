@@ -28,6 +28,7 @@
 
 #include "obstacle.hpp"
 #include "player.hpp"
+#include "freakingAudio.hpp"
 #include "spawner.hpp"
 #include "question-mark-block.hpp"
 
@@ -58,7 +59,7 @@ int main(int argc, char** argv)
     // cubos.plugin(questionMarkBlockPlugin);
 
     cubos.plugin(audioPlugin);
-
+    cubos.plugin(freakingAudioPlugin);
 
     // -------
     // Systems
